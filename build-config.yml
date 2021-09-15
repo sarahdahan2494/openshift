@@ -1,0 +1,34 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: result-build
+  label: 
+    build: result-build
+spec:
+  source:
+    type: Git
+    git: 
+      uri: 'https://github.com/ihabAbadi/TP'
+    contextDir: result
+  strategy:
+        type: Docker
+        dockerStrategy:
+            dockerfilePath: Dockerfile
+  output:
+      to:
+          kind: ImageStreamTag
+          name: result-image:latest
+triggers:
+        # - type: "GitHub", "gitlab", "bitbucket", "git"
+        #Si le type est git alors il faut ajouter un fichier .gitconfig qui doit fournir les informations de connexion au serveur git (certificat ssl, ssh key...)
+        # github:
+        #     secretReference:
+        #         name: "mysecret"
+#Adresse pour envoyer une requête vers openshift pour démarrer un nouveau build est sous la forme :
+#https://console-openshift-console.apps.sandbox.x8i5.p1.openshiftapps.com/oapi/v1/namespaces/utopios-dev/buildconfigs/result-build/webhooks/fd9d002b1e9d930c/github  
+        # - type: ImageChange
+        # imageChange:
+        #     from:
+        #         kind: "DockerImage"
+        #         name: "node"
+        - type: ConfigChange
